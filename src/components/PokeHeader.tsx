@@ -34,10 +34,7 @@ background-size: cover;
 
 const SeacrhPoke = styled.input`
     width: 50%;
-    image{
-        width: 50px;
-        height: 50px;
-    }
+
 `
 
 const Login = styled.button`
