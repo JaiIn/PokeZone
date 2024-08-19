@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { PokemonResponse, PokemonResult, DetailInfo } from '../types/Pokemon';
+import { Generation } from '../components/Generation';
 
 const getPokemonSpecies = async (url: string) => {
     try {
@@ -16,9 +17,12 @@ const getKoreanName = async (names:any[]) => {
     return KoreanName ? KoreanName.name : "Unknown";
 }
 
-export const fetchPokemon = async (): Promise<DetailInfo[]> => {
+export const fetchPokemon = async (genId: number): Promise<DetailInfo[]> => {
     try {
-        const response = await axios.get<PokemonResponse>('https://pokeapi.co/api/v2/pokemon?limit=151');
+
+        const {offset, limit} = Generation.find(gen => gen.id === genId) || {offset:0, limit:151};
+
+        const response = await axios.get<PokemonResponse>(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
         const pokemonList = response.data.results;
 
         const pokemonDetails = await Promise.all(
