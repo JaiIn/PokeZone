@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PokemonResponse, PokemonResult, DetailInfo } from '../types/Pokemon';
+import { PokemonResponse, PokemonResult, DetailInfo, DeatilResponse } from '../types/Pokemon';
 import { Generation } from '../components/Generation';
 
 const getPokemonSpecies = async (url: string) => {
@@ -30,14 +30,17 @@ export const fetchPokemon = async (genId: number): Promise<DetailInfo[]> => {
                 const speciesData = await getPokemonSpecies(pokemon.url);
                 const koreanName = await getKoreanName(speciesData.names);
 
-                const pokemonDetailResponse = await axios.get(pokemon.url);
+                const pokemonDetailResponse = await axios.get<DeatilResponse>(pokemon.url);
                 const pokemonDetailData = pokemonDetailResponse.data;
                 const imageUrl = pokemonDetailData.sprites.front_default;
+                const tpyes = pokemonDetailData.types.map(typeInfo => typeInfo.type.name);
 
                 return {
                     ...pokemon,
                     KoreanName: koreanName,
                     imageUrl: imageUrl,
+                    id:pokemonDetailData.id,
+                    types:tpyes,
                 };
             })
         );
