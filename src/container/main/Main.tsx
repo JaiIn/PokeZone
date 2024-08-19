@@ -2,13 +2,16 @@ import { Wrapper } from '../../style/Wrapper';
 import PokeHeader from '../../components/PokeHeader';
 import styled from 'styled-components';
 import PokeInfoContainer from './PokeInfoContainer';
+import BtnContainer from './BtnContainer';
+import useDarkModeStore from '../../zustand/useDarkModeStore';
 
 const Main = () => {
-    
+    const isDarkMode = useDarkModeStore((state)=>state.isDarkMode);
     return (
-        <Wrapper>
+        <Wrapper isDarkMode={isDarkMode}>
             <PokeHeader/>
-            <Container>              
+            <BtnContainer/>
+            <Container>
                 <PokeInfoContainer/>
             </Container>
         </Wrapper>

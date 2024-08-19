@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {DetailInfo } from '../../types/Pokemon';
 import fetchPokemon from '../../api/fetchPokemon';
+import useDarkModeStore from '../../zustand/useDarkModeStore';
 
 const PokeInfoContainer = () => {
     const [PokeInfo, setPokeInfo] = useState<DetailInfo[]>([]);
-
+    const isDarkMode = useDarkModeStore((state)=>state.isDarkMode);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -17,24 +18,25 @@ const PokeInfoContainer = () => {
         }
         fetchData();
     },[])
+
     return (
         <>
             {PokeInfo.length > 0 ? (
                     PokeInfo.map(pokemon => 
-                        <ShowPoke key={pokemon.name}>
+                        <ShowPoke key={pokemon.name} isDarkMode={isDarkMode}>
                             <img src={pokemon.imageUrl} alt={pokemon.name}/>
                             <div>{pokemon.KoreanName}</div>
                             </ShowPoke>
                         )
                     ):
-                    <ShowPoke>로딩중</ShowPoke>}
+                    <ShowPoke isDarkMode={isDarkMode}>로딩중</ShowPoke>}
         </>
     );
 };
 
 export default PokeInfoContainer;
 
-const ShowPoke = styled.div`
+const ShowPoke = styled.div<{isDarkMode:boolean}>`
     cursor: pointer;
     width:200px;
     height: 230px;
@@ -49,6 +51,10 @@ const ShowPoke = styled.div`
         height: 150px;
         object-fit: cover;
         margin-bottom: 5px;
+        background-color: white;
         &:hover{box-shadow: 0 2px 4px rgba(0,0,0,1);}
+    }
+    div{
+        color: ${({isDarkMode}) => (isDarkMode ? 'white' : 'black')};
     }
 `
