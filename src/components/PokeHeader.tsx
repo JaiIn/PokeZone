@@ -15,7 +15,6 @@ const PokeHeader = () => {
 export default PokeHeader;
 
 const Container = styled.div`
-    margin-top: 5px;
     width: 100%;
     display: flex;
     flex-direction: row;

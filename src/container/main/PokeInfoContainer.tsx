@@ -3,21 +3,23 @@ import styled from 'styled-components';
 import {DetailInfo } from '../../types/Pokemon';
 import fetchPokemon from '../../api/fetchPokemon';
 import useDarkModeStore from '../../zustand/useDarkModeStore';
+import useGenerations from '../../zustand/useGenerations';
 
 const PokeInfoContainer = () => {
     const [PokeInfo, setPokeInfo] = useState<DetailInfo[]>([]);
     const isDarkMode = useDarkModeStore((state)=>state.isDarkMode);
+    const selecedGeneration = useGenerations((state)=>state.selectedGeneration);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetchPokeData = await fetchPokemon();    
+                const fetchPokeData = await fetchPokemon(selecedGeneration);    
                 setPokeInfo(fetchPokeData);
             } catch (error) {
                 throw error;
             }
         }
         fetchData();
-    },[])
+    },[selecedGeneration])
 
     return (
         <>

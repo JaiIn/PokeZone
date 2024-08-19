@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import useDarkModeStore from '../../zustand/useDarkModeStore';
+import SelectGeneration from './SelectGeneration';
 
 const BtnContainer = () => {
 
@@ -37,9 +38,6 @@ flex-direction: row;
 align-items: center;
 justify-content: space-between;
 align-items: center;
-`
-
-const SelectGeneration = styled.select`
 `
 
 const DarkModeContinaer = styled.div`
