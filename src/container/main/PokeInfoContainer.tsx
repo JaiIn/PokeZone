@@ -5,6 +5,7 @@ import fetchPokemon from '../../api/fetchPokemon';
 import useDarkModeStore from '../../zustand/useDarkModeStore';
 import useGenerations from '../../zustand/useGenerations';
 import { KoreanType } from '../../components/KoreanType';
+import { TypeColors } from '../../components/TypeColor';
 
 const PokeInfoContainer = () => {
     
@@ -31,13 +32,22 @@ const PokeInfoContainer = () => {
             {PokeInfo.length > 0 ? (
                     PokeInfo.map(pokemon => 
                         <ShowPoke key={pokemon.name} isDarkMode={isDarkMode}>
-                            <img src={pokemon.imageUrl} alt={pokemon.name}/>
-                            <div>{pokemon.KoreanName}</div>
+                            <img key={pokemon.id} src={pokemon.imageUrl} alt={pokemon.name}/>
+
+                            <NameContainer>
+                                <p>No.{pokemon.id.toString().padStart(4,'0')}</p>
+                                <PokemonName 
+                                key={pokemon.id} 
+                                isDarkMode={isDarkMode}>{pokemon.KoreanName}</PokemonName>
+                            </NameContainer>
+
                             <TypeContainer>
                                 {pokemon.types.map(type=>
-                                    <div key={type}>
+                                    <TypeName 
+                                    key={type} 
+                                    backgroundColor={TypeColors[type] || 'black'}>
                                         {KoreanType[type] || type}
-                                    </div>)}
+                                    </TypeName>)}
                             </TypeContainer>
                             </ShowPoke>
                         )
@@ -50,6 +60,7 @@ const PokeInfoContainer = () => {
 export default PokeInfoContainer;
 
 const ShowPoke = styled.div<{isDarkMode:boolean}>`
+    margin: 2px;
     cursor: pointer;
     width:200px;
     height: 230px;
@@ -57,7 +68,9 @@ const ShowPoke = styled.div<{isDarkMode:boolean}>`
     flex-direction: column;
     align-items: center;
     transition: box-shadow 0.3s ease-in-out;
+    border: 0.5px solid lightgrey;
     img{
+        margin-top: 5px;
         border: 1px solid black;
         border-radius: 30px;
         width: 150px;
@@ -67,13 +80,37 @@ const ShowPoke = styled.div<{isDarkMode:boolean}>`
         background-color: white;
         &:hover{box-shadow: 0 2px 4px rgba(0,0,0,1);}
     }
-    div{
+    p{
+        margin: 0px;
         color: ${({isDarkMode}) => (isDarkMode ? 'white' : 'black')};
+        font-size: 10px;
     }
 `
 const TypeContainer = styled.div`
+margin-top:5px;
     width: 60%;
     display: flex;
     flex-direction:row;
     justify-content: space-evenly;
+`
+
+const NameContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+`
+const TypeName = styled.div<{backgroundColor:string}>`
+    color: white;
+    background-color: ${({backgroundColor})=>backgroundColor};
+    width: 45%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 10px;
+`
+
+const PokemonName = styled.div<{isDarkMode:boolean}>`
+    color: ${({isDarkMode}) => (isDarkMode ? 'white' : 'black')};
+    font-size: 18px;
 `
