@@ -69,16 +69,12 @@ const ShowPoke = styled.div<{isDarkMode:boolean}>`
     align-items: center;
     transition: box-shadow 0.3s ease-in-out;
     border: 0.5px solid lightgrey;
+    &:hover{box-shadow: 0 2px 4px rgba(0,0,0,1);}
     img{
         margin-top: 5px;
-        border: 1px solid black;
-        border-radius: 30px;
         width: 150px;
         height: 150px;
-        object-fit: cover;
-        margin-bottom: 5px;
-        background-color: white;
-        &:hover{box-shadow: 0 2px 4px rgba(0,0,0,1);}
+        // background-color: white;
     }
     p{
         margin: 0px;
@@ -113,4 +109,6 @@ const TypeName = styled.div<{backgroundColor:string}>`
 const PokemonName = styled.div<{isDarkMode:boolean}>`
     color: ${({isDarkMode}) => (isDarkMode ? 'white' : 'black')};
     font-size: 18px;
+    display: flex;
+    flex-direction: row;
 `

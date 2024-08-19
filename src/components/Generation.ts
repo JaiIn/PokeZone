@@ -8,7 +8,7 @@ export const Generation = [
     { id: 6, name: '6세대', offset: 649, limit: 72 },
     { id: 7, name: '7세대', offset: 721, limit: 88 },
     { id: 8, name: '8세대', offset: 809, limit: 96 },
-    { id: 9, name: '9세대', offset: 905, limit: 105 },
+    { id: 9, name: '9세대', offset: 905, limit: 120 },
 ]
 
 //전국도감 limit: 1010
