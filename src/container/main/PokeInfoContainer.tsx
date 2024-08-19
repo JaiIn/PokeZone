@@ -4,11 +4,16 @@ import {DetailInfo } from '../../types/Pokemon';
 import fetchPokemon from '../../api/fetchPokemon';
 import useDarkModeStore from '../../zustand/useDarkModeStore';
 import useGenerations from '../../zustand/useGenerations';
+import { KoreanType } from '../../components/KoreanType';
 
 const PokeInfoContainer = () => {
+    
     const [PokeInfo, setPokeInfo] = useState<DetailInfo[]>([]);
+
     const isDarkMode = useDarkModeStore((state)=>state.isDarkMode);
+
     const selecedGeneration = useGenerations((state)=>state.selectedGeneration);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -28,6 +33,12 @@ const PokeInfoContainer = () => {
                         <ShowPoke key={pokemon.name} isDarkMode={isDarkMode}>
                             <img src={pokemon.imageUrl} alt={pokemon.name}/>
                             <div>{pokemon.KoreanName}</div>
+                            <TypeContainer>
+                                {pokemon.types.map(type=>
+                                    <div key={type}>
+                                        {KoreanType[type] || type}
+                                    </div>)}
+                            </TypeContainer>
                             </ShowPoke>
                         )
                     ):
@@ -59,4 +70,10 @@ const ShowPoke = styled.div<{isDarkMode:boolean}>`
     div{
         color: ${({isDarkMode}) => (isDarkMode ? 'white' : 'black')};
     }
+`
+const TypeContainer = styled.div`
+    width: 60%;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-evenly;
 `
