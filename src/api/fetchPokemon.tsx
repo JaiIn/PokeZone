@@ -12,12 +12,12 @@ const getPokemonSpecies = async (url: string) => {
     }
 }
 
-const getKoreanName = async (names:any[]) => {
-    const KoreanName = names.find(name => name.language.name === 'ko');
+const getKoreanName = async (names:any[],isKorean:string) => {
+    const KoreanName = names.find(name => name.language.name === `${isKorean}`);
     return KoreanName ? KoreanName.name : "Unknown";
 }
 
-export const fetchPokemon = async (genId: number): Promise<DetailInfo[]> => {
+export const fetchPokemon = async (genId: number,isKorean:string): Promise<DetailInfo[]> => {
     try {
 
         const {offset, limit} = Generation.find(gen => gen.id === genId) || {offset:0, limit:151};
@@ -28,7 +28,7 @@ export const fetchPokemon = async (genId: number): Promise<DetailInfo[]> => {
         const pokemonDetails = await Promise.all(
             pokemonList.map(async (pokemon: PokemonResult) => {
                 const speciesData = await getPokemonSpecies(pokemon.url);
-                const koreanName = await getKoreanName(speciesData.names);
+                const koreanName = await getKoreanName(speciesData.names,isKorean);
 
                 const pokemonDetailResponse = await axios.get<DeatilResponse>(pokemon.url);
                 const pokemonDetailData = pokemonDetailResponse.data;

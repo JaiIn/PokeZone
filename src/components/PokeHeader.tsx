@@ -1,12 +1,23 @@
 import styled from 'styled-components';
+import useLanguageStore from '../zustand/useLanguageStore';
 
 const PokeHeader = () => {
+
+    const toEnglish = useLanguageStore(state => state.toEnglish);
+    const toKoreaen = useLanguageStore(state => state.toKorean);
+    const isKorean = useLanguageStore(state => state.isKorean);
+
+    console.log({isKorean});
+    
     return (
         <>
             <Container>
                 <Logo/>
                 <SeacrhPoke/>
-                <Login>로그인</Login>
+                <Language>
+                    <English onClick={toEnglish}/>
+                    <Korean onClick={toKoreaen}/>
+                </Language>
             </Container>
         </>
     );
@@ -34,6 +45,27 @@ const SeacrhPoke = styled.input`
     width: 50%;
 `
 
-const Login = styled.button`
-    
+const English = styled.div`
+    cursor: pointer;
+    background-image: url('images/USA.jpg');
+    background-position: center;
+    background-size: cover;
+    width: 40px;
+    height: 25px;
+`
+
+const Korean = styled.div`
+    cursor: pointer;
+    background-image: url('images/korean.jpg');
+    background-position: center;
+    background-size: cover;
+    width: 40px;
+    height: 25px;
+`
+
+const Language = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `

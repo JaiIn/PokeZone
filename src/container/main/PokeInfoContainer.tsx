@@ -6,6 +6,7 @@ import useDarkModeStore from '../../zustand/useDarkModeStore';
 import useGenerations from '../../zustand/useGenerations';
 import { KoreanType } from '../../components/KoreanType';
 import { TypeColors } from '../../components/TypeColor';
+import useLanguageStore from '../../zustand/useLanguageStore';
 
 const PokeInfoContainer = () => {
     
@@ -15,17 +16,19 @@ const PokeInfoContainer = () => {
 
     const selecedGeneration = useGenerations((state)=>state.selectedGeneration);
 
+    const isKorean = useLanguageStore(state => state.isKorean);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetchPokeData = await fetchPokemon(selecedGeneration);    
+                const fetchPokeData = await fetchPokemon(selecedGeneration,isKorean);    
                 setPokeInfo(fetchPokeData);
             } catch (error) {
                 throw error;
             }
         }
         fetchData();
-    },[selecedGeneration])
+    },[selecedGeneration, isKorean]);
 
     return (
         <>
@@ -46,7 +49,7 @@ const PokeInfoContainer = () => {
                                     <TypeName 
                                     key={type} 
                                     backgroundColor={TypeColors[type] || 'black'}>
-                                        {KoreanType[type] || type}
+                                        {isKorean === 'ko' ? KoreanType[type] : type}
                                     </TypeName>)}
                             </TypeContainer>
                             </ShowPoke>
