@@ -5,10 +5,7 @@ const PokeHeader = () => {
 
     const toEnglish = useLanguageStore(state => state.toEnglish);
     const toKoreaen = useLanguageStore(state => state.toKorean);
-    const isKorean = useLanguageStore(state => state.isKorean);
 
-    console.log({isKorean});
-    
     return (
         <>
             <Container>

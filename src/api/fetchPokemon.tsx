@@ -17,12 +17,23 @@ const getKoreanName = async (names:any[],isKorean:string) => {
     return KoreanName ? KoreanName.name : "Unknown";
 }
 
-export const fetchPokemon = async (genId: number,isKorean:string): Promise<DetailInfo[]> => {
+export const fetchPokemon = async (genId: number,isKorean:string, Limit:number,Page:number): Promise<DetailInfo[]> => {
     try {
 
-        const {offset, limit} = Generation.find(gen => gen.id === genId) || {offset:0, limit:151};
+        let {offset, limit} = Generation.find(gen => gen.id === genId) || {offset:0, limit:151};
 
-        const response = await axios.get<PokemonResponse>(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+        let LimitData = Limit;
+        let OffsetData = offset + (Page-1) * Limit;
+
+        if (OffsetData >= offset + limit) {
+            return [];
+        }
+
+        if (OffsetData + Limit > offset + limit) {
+            LimitData = (offset + limit) - OffsetData;
+        }
+
+        const response = await axios.get<PokemonResponse>(`https://pokeapi.co/api/v2/pokemon?limit=${LimitData}&offset=${OffsetData}`);
         const pokemonList = response.data.results;
 
         const pokemonDetails = await Promise.all(

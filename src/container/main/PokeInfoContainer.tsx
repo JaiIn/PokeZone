@@ -7,27 +7,41 @@ import useGenerations from '../../zustand/useGenerations';
 import { KoreanType } from '../../components/KoreanType';
 import { TypeColors } from '../../components/TypeColor';
 import useLanguageStore from '../../zustand/useLanguageStore';
+import useInfiniteScroll from '../../hook/useInfiniteScroll';
 
 const PokeInfoContainer = () => {
     
     const [PokeInfo, setPokeInfo] = useState<DetailInfo[]>([]);
+    const [Page, setPage] = useState<number>(1);
+    const Limit = 20;
 
     const isDarkMode = useDarkModeStore((state)=>state.isDarkMode);
-
     const selecedGeneration = useGenerations((state)=>state.selectedGeneration);
-
     const isKorean = useLanguageStore(state => state.isKorean);
 
+    const FetchMoreData = async() => {
+        try {
+            const morePoke = await fetchPokemon(selecedGeneration,isKorean,Limit,Page);
+            setPokeInfo((prevInfo) => [...prevInfo, ...morePoke]);
+            setPage(prev => prev+1);
+        } catch (error) {
+            throw error;
+        };
+    }
+
+    useInfiniteScroll(FetchMoreData);
+
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchInitalData = async() => {
             try {
-                const fetchPokeData = await fetchPokemon(selecedGeneration,isKorean);    
-                setPokeInfo(fetchPokeData);
+                const InitialPokemon = await fetchPokemon(selecedGeneration,isKorean,Limit,1);
+                setPokeInfo(InitialPokemon);
+                setPage(2);
             } catch (error) {
                 throw error;
             }
-        }
-        fetchData();
+        };
+        fetchInitalData();
     },[selecedGeneration, isKorean]);
 
     return (
@@ -77,7 +91,6 @@ const ShowPoke = styled.div<{isDarkMode:boolean}>`
         margin-top: 5px;
         width: 150px;
         height: 150px;
-        // background-color: white;
     }
     p{
         margin: 0px;
@@ -86,7 +99,7 @@ const ShowPoke = styled.div<{isDarkMode:boolean}>`
     }
 `
 const TypeContainer = styled.div`
-margin-top:5px;
+    margin-top:5px;
     width: 60%;
     display: flex;
     flex-direction:row;
@@ -102,7 +115,11 @@ const NameContainer = styled.div`
 const TypeName = styled.div<{backgroundColor:string}>`
     color: white;
     background-color: ${({backgroundColor})=>backgroundColor};
-    width: 45%;
+    width: 40%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
     display: flex;
     flex-direction: row;
     justify-content: center;

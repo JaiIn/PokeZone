@@ -1,5 +1,5 @@
 export const Generation = [
-    { id: 0, name: '전국도감', offset: 0, limit: 200 },
+    { id: 0, name: '전국도감', offset: 0, limit: 1025 },
     { id: 1, name: '1세대', offset: 0, limit: 151 },
     { id: 2, name: '2세대', offset: 151, limit: 100 },
     { id: 3, name: '3세대', offset: 251, limit: 135 },
