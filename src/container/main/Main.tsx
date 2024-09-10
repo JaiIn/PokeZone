@@ -6,6 +6,7 @@ import BtnContainer from './BtnContainer';
 import useDarkModeStore from '../../zustand/useDarkModeStore';
 
 const Main = () => {
+    
     const isDarkMode = useDarkModeStore((state)=>state.isDarkMode);
 
     return (

@@ -8,9 +8,15 @@ import { KoreanType } from '../../components/KoreanType';
 import { TypeColors } from '../../components/TypeColor';
 import useLanguageStore from '../../zustand/useLanguageStore';
 import useInfiniteScroll from '../../hook/useInfiniteScroll';
+import { useNavigate } from 'react-router-dom';
 
 const PokeInfoContainer = () => {
     
+    const IdNavigate = useNavigate();
+    const handlePokemonClick = (id:number) => {
+        IdNavigate(`pokeInfo/${id}`);
+    }
+
     const [PokeInfo, setPokeInfo] = useState<DetailInfo[]>([]);
     const [Page, setPage] = useState<number>(1);
     const Limit = 20;
@@ -48,7 +54,7 @@ const PokeInfoContainer = () => {
         <>
             {PokeInfo.length > 0 ? (
                     PokeInfo.map(pokemon => 
-                        <ShowPoke key={pokemon.name} isDarkMode={isDarkMode}>
+                        <ShowPoke key={pokemon.name} isDarkMode={isDarkMode} onClick={()=>handlePokemonClick(pokemon.id)}>
                             <img key={pokemon.id} src={pokemon.imageUrl} alt={pokemon.name}/>
 
                             <NameContainer>

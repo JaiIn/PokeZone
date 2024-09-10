@@ -17,6 +17,9 @@ const getKoreanName = async (names:any[],isKorean:string) => {
     return KoreanName ? KoreanName.name : "Unknown";
 }
 
+const getEachInfo = async(id:number) => {
+}
+
 export const fetchPokemon = async (genId: number,isKorean:string, Limit:number,Page:number): Promise<DetailInfo[]> => {
     try {
 
